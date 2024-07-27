@@ -164,7 +164,6 @@ func calculateLines() {
 			current_pin_p1 := (current_pin + 1) % PINS
 			current_pin_p2 := (current_pin + 2) % PINS
 			current_pin_p3 := (current_pin + 3) % PINS
-			test_pin := (current_pin + offset) % PINS
 			if(contains(last_pins, test_pin)){
 				continue;
 			} else {
@@ -174,44 +173,50 @@ func calculateLines() {
 				inner_index_p1 := test_pin * PINS + current_pin_p1
 				inner_index_p2 := test_pin * PINS + current_pin_p2
 				inner_index_p3 := test_pin * PINS + current_pin_p3
-				inner_index = test_pin * PINS + current_pin
-
-				line_err = getLineErr(error, Line_cache_y[inner_index_m3], Line_cache_x[inner_index_m3])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = -3
-				line_err = getLineErr(error, Line_cache_y[inner_index_m1], Line_cache_x[inner_index_m1])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = -1
-				line_err = getLineErr(error, Line_cache_y[inner_index_p2], Line_cache_x[inner_index_p2])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = +2
-				line_err = getLineErr(error, Line_cache_y[inner_index_m2], Line_cache_x[inner_index_m2])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = -2
-				line_err = getLineErr(error, Line_cache_y[inner_index_p3], Line_cache_x[inner_index_p1])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = +1
-				line_err = getLineErr(error, Line_cache_y[inner_index_p3], Line_cache_x[inner_index_p3])
-				if( line_err > max_err){
-					max_err = line_err
-					best_pin = test_pin
-					index = inner_index
-				final_offset = -3
+				if( (current_pin % 2) = 1){
+					line_err = getLineErr(error, Line_cache_y[inner_index_m3], Line_cache_x[inner_index_m3])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = -3
+					}
+					line_err = getLineErr(error, Line_cache_y[inner_index_m1], Line_cache_x[inner_index_m1])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = -1
+					}
+					line_err = getLineErr(error, Line_cache_y[inner_index_p2], Line_cache_x[inner_index_p2])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = +2
+					};
+				} else {
+					line_err = getLineErr(error, Line_cache_y[inner_index_m2], Line_cache_x[inner_index_m2])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = -2
+					}
+					line_err = getLineErr(error, Line_cache_y[inner_index_p3], Line_cache_x[inner_index_p1])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = +1
+					}
+					line_err = getLineErr(error, Line_cache_y[inner_index_p3], Line_cache_x[inner_index_p3])
+					if( line_err > max_err){
+						max_err = line_err
+						best_pin = test_pin
+						index = inner_index
+						final_offset = +3
+					}
 				}
 			}
 		}
