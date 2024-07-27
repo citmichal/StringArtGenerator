@@ -271,7 +271,7 @@ function NonBlockingPrecalculateLines(){
 
     (function codeBlock(){
         if(a < N_PINS){
-            for (b = a + MIN_DISTANCE; b < N_PINS; b++) {
+            for (b = a; b < N_PINS; b++) {
                 x0 = pin_coords[a][0];
                 y0 = pin_coords[a][1];
             
