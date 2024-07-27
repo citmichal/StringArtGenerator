@@ -155,10 +155,8 @@ let line_mask;
 let line_sequence;
 let pin;
 let pin_m3;
-let pin_m2;
 let pin_m1;
 let pin_p3;
-let pin_p2;
 let pin_p1;
 
 let final_offset;
@@ -328,10 +326,8 @@ function NonBlockingLineCalculator(){
 
             for(offset=MIN_DISTANCE; offset < N_PINS - MIN_DISTANCE; offset++){
                 pin_m3 = (pin - 3) % N_PINS;
-    			pin_m2 = (pin - 2) % N_PINS;
     			pin_m1 = (pin - 1) % N_PINS;
     			pin_p1 = (pin + 1) % N_PINS;
-    			pin_p2 = (pin + 2) % N_PINS;
     			pin_p3 = (pin + 3) % N_PINS;
                 test_pin = (pin + offset) % N_PINS;
                 if(last_pins.includes(test_pin)){
@@ -339,17 +335,6 @@ function NonBlockingLineCalculator(){
                 }else {
 
                     if( pin%2 == 0){
-                        xs = line_cache_x[test_pin * N_PINS + pin_m2];
-                        ys = line_cache_y[test_pin * N_PINS + pin_m2];
-    
-                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_m2];
-    
-                        if( line_err > max_err){
-                            max_err = line_err;
-                            best_pin = test_pin;
-                            final_offset = -2;
-                        }
-
                         xs = line_cache_x[test_pin * N_PINS + pin_p1];
                         ys = line_cache_y[test_pin * N_PINS + pin_p1];
     
@@ -393,17 +378,6 @@ function NonBlockingLineCalculator(){
                             max_err = line_err;
                             best_pin = test_pin;
                             final_offset = -1;
-                        }
-
-                        xs = line_cache_x[test_pin * N_PINS + pin_p2];
-                        ys = line_cache_y[test_pin * N_PINS + pin_p2];
-    
-                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_p2];
-    
-                        if( line_err > max_err){
-                            max_err = line_err;
-                            best_pin = test_pin;
-                            final_offset = 2;
                         }
                     }
                 }
