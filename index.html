@@ -396,6 +396,14 @@ function NonBlockingLineCalculator(){
 
 
             
+            console.log("pin:");
+            console.log(pin);
+            console.log("final_offset:");
+            console.log(final_offset);
+            console.log("best_pin:");
+            console.log(best_pin);
+            console.log("pin:");
+            console.log(pin);
             p = new cv.Point(pin_coords[pin][0] * SCALE, pin_coords[pin][1] * SCALE);
             p2 = new cv.Point(pin_coords[(pin + final_offset)%N_PINS][0] * SCALE, pin_coords[(pin + final_offset)%N_PINS][1] * SCALE);
             cv.line(result, p, p2, new cv.Scalar(0, 0, 0), 2, cv.LINE_AA, 0);
