@@ -173,7 +173,7 @@ func calculateLines() {
 				inner_index_p1 := test_pin * PINS + current_pin_p1
 				inner_index_p2 := test_pin * PINS + current_pin_p2
 				inner_index_p3 := test_pin * PINS + current_pin_p3
-				if( (current_pin % 2) = 1){
+				if( (current_pin % 2) == 1){
 					line_err = getLineErr(error, Line_cache_y[inner_index_m3], Line_cache_x[inner_index_m3])
 					if( line_err > max_err){
 						max_err = line_err
