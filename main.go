@@ -221,8 +221,9 @@ func calculateLines() {
 			}
 		}
 
-		line_sequence = append(line_sequence, current_pin + final_offset)
-		line_sequence = append(line_sequence, best_pin)
+//		line_sequence = append(line_sequence, current_pin + final_offset)
+//		line_sequence = append(line_sequence, best_pin)
+		line_sequence = append(line_sequence, i*10)
 
 		coords1:=Line_cache_y[index]
 		coords2:=Line_cache_x[index]
