@@ -144,7 +144,7 @@ func calculateLines() {
 	fmt.Println("Drawing Lines....")
 	error := num.Sub(num.MulByConst(num.Ones(IMG_SIZE_SQ), float64(255)), SourceImage)
 
-	line_sequence := make([]int, 1, 4096)
+	line_sequence := make([]int, 1, 8192)
 	current_pin := 0
 	last_pins := make([]int, 20, 24)
 	best_pin := -1
