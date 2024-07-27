@@ -110,7 +110,7 @@ let MIN_DISTANCE = 20;
 let LINE_WEIGHT = 20;
 let FILENAME = "";
 let SCALE = 20;
-let HOOP_DIAMETER = 0.625;
+let HOOP_DIAMETER = 0.19;
 
 let img;
 
@@ -154,6 +154,15 @@ let line_mask;
     
 let line_sequence;
 let pin;
+let pin_m3;
+let pin_m2;
+let pin_m1;
+let pin_p3;
+let pin_p2;
+let pin_p1;
+
+let final_offset;
+    
 let thread_length;
 let last_pins;
 
@@ -318,28 +327,94 @@ function NonBlockingLineCalculator(){
             best_pin = -1;
 
             for(offset=MIN_DISTANCE; offset < N_PINS - MIN_DISTANCE; offset++){
+                pin_m3 := (pin - 3) % N_PINS;
+    			pin_m2 := (pin - 2) % N_PINS;
+    			pin_m1 := (pin - 1) % N_PINS;
+    			pin_p1 := (pin + 1) % N_PINS;
+    			pin_p2 := (pin + 2) % N_PINS;
+    			pin_p3 := (pin + 3) % N_PINS;
                 test_pin = (pin + offset) % N_PINS;
                 if(last_pins.includes(test_pin)){
                     continue;
                 }else {
 
-                    xs = line_cache_x[test_pin * N_PINS + pin];
-                    ys = line_cache_y[test_pin * N_PINS + pin];
+                    if( pin%2 == 0){
+                        xs = line_cache_x[test_pin * N_PINS + pin_m2];
+                        ys = line_cache_y[test_pin * N_PINS + pin_m2];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_m2];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = -2;
+                        }
 
-                    line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin];
+                        xs = line_cache_x[test_pin * N_PINS + pin_p1];
+                        ys = line_cache_y[test_pin * N_PINS + pin_p1];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_p1];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = 1;
+                        }
 
-                    if( line_err > max_err){
-                        max_err = line_err;
-                        best_pin = test_pin;
+                        xs = line_cache_x[test_pin * N_PINS + pin_p3];
+                        ys = line_cache_y[test_pin * N_PINS + pin_p3];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_p3];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = 3;
+                        }
+
+                    }else {
+                        xs = line_cache_x[test_pin * N_PINS + pin_m3];
+                        ys = line_cache_y[test_pin * N_PINS + pin_m3];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_m3];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = -3;
+                        }
+
+                        xs = line_cache_x[test_pin * N_PINS + pin_m1];
+                        ys = line_cache_y[test_pin * N_PINS + pin_m1];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_m1];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = -1;
+                        }
+
+                        xs = line_cache_x[test_pin * N_PINS + pin_p2];
+                        ys = line_cache_y[test_pin * N_PINS + pin_p2];
+    
+                        line_err = getLineErr(error, ys, xs) * line_cache_weight[test_pin * N_PINS + pin_p2];
+    
+                        if( line_err > max_err){
+                            max_err = line_err;
+                            best_pin = test_pin;
+                            final_offset = 2;
+                        }
                     }
                 }
             }
 
+            line_sequence.push((pin + final_offset)%N_PINS);
             line_sequence.push(best_pin);
 
-            xs = line_cache_x[best_pin * N_PINS + pin];
-            ys = line_cache_y[best_pin * N_PINS + pin];
-            weight = LINE_WEIGHT * line_cache_weight[best_pin * N_PINS + pin];
+            xs = line_cache_x[best_pin * N_PINS + (pin + final_offset)%N_PINS];
+            ys = line_cache_y[best_pin * N_PINS + (pin + final_offset)%N_PINS];
+            weight = LINE_WEIGHT * line_cache_weight[best_pin * N_PINS + (pin + final_offset)%N_PINS];
             
             line_mask = nj.zeros([IMG_SIZE, IMG_SIZE], 'float64');
             line_mask = setLine(line_mask, ys, xs, weight);
