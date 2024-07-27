@@ -327,12 +327,12 @@ function NonBlockingLineCalculator(){
             best_pin = -1;
 
             for(offset=MIN_DISTANCE; offset < N_PINS - MIN_DISTANCE; offset++){
-                pin_m3 := (pin - 3) % N_PINS;
-    			pin_m2 := (pin - 2) % N_PINS;
-    			pin_m1 := (pin - 1) % N_PINS;
-    			pin_p1 := (pin + 1) % N_PINS;
-    			pin_p2 := (pin + 2) % N_PINS;
-    			pin_p3 := (pin + 3) % N_PINS;
+                pin_m3 = (pin - 3) % N_PINS;
+    			pin_m2 = (pin - 2) % N_PINS;
+    			pin_m1 = (pin - 1) % N_PINS;
+    			pin_p1 = (pin + 1) % N_PINS;
+    			pin_p2 = (pin + 2) % N_PINS;
+    			pin_p3 = (pin + 3) % N_PINS;
                 test_pin = (pin + offset) % N_PINS;
                 if(last_pins.includes(test_pin)){
                     continue;
