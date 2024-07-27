@@ -423,11 +423,24 @@ function NonBlockingLineCalculator(){
 
             
             p = new cv.Point(pin_coords[pin][0] * SCALE, pin_coords[pin][1] * SCALE);
+            p2 = new cv.Point(pin_coords[(pin + final_offset)%N_PINS][0] * SCALE, pin_coords[(pin + final_offset)%N_PINS][1] * SCALE);
+            cv.line(result, p, p2, new cv.Scalar(0, 0, 0), 2, cv.LINE_AA, 0);
+
+            p = new cv.Point(pin_coords[(pin + final_offset)%N_PINS][0] * SCALE, pin_coords[(pin + final_offset)%N_PINS][1] * SCALE);
             p2 = new cv.Point(pin_coords[best_pin][0] * SCALE, pin_coords[best_pin][1] * SCALE);
             cv.line(result, p, p2, new cv.Scalar(0, 0, 0), 2, cv.LINE_AA, 0);
 
             x0 = pin_coords[pin][0];
             y0 = pin_coords[pin][1];
+
+            x1 = pin_coords[(pin + final_offset)%N_PINS][0];
+            y1 = pin_coords[(pin + final_offset)%N_PINS][1];
+
+            dist = Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+            thread_length += HOOP_DIAMETER / length * dist;
+
+            x0 = pin_coords[(pin + final_offset)%N_PINS][0];
+            y0 = pin_coords[(pin + final_offset)%N_PINS][1];
 
             x1 = pin_coords[best_pin][0];
             y1 = pin_coords[best_pin][1];
@@ -448,6 +461,8 @@ function NonBlockingLineCalculator(){
             setTimeout(codeBlock, 0);
         } else {
             console.log('Done Drawing Lines');
+            console.log('Thread lenght: ');
+            console.log(thread_length);
             Finalize();
         }
     })();
